@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pri: { 50: '#E8F4F8', 100: '#C5E3ED', 200: '#8EC7D8', 300: '#57ABC3', 400: '#2090AE', 500: '#0A6E8A', 600: '#085A70', 700: '#064556', 800: '#04313C', 900: '#021D22' },
+                        navy: { 800: '#1A2344', 900: '#0D1428' },
+                        ok: '#43A047', warn: '#FFB300', crit: '#E53935',
+                    },
+                    fontFamily: { display: ['"Space Grotesk"', 'sans-serif'], body: ['"DM Sans"', 'sans-serif'] },
+                },
+            },
+        };
+    </script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="flex flex-col h-screen">
+    <!-- Navbar -->
+    <nav id="navbar" class="sticky top-0 px-6 py-3 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-pri-500 flex items-center justify-center">
+                <i class="fa-solid fa-shield-halved text-white text-sm"></i>
+            </div>
+            <span class="font-display font-semibold text-navy-900 text-[15px] tracking-tight">AI Surgical System</span>
+            <span class="text-[10px] font-semibold bg-pri-50 text-pri-600 px-2 py-0.5 rounded-full ml-1">v2.4</span>
+        </div>
+        <div id="nav-links" class="flex items-center gap-2">
+            <div class="relative">
+                <button id="notif-btn" onclick="toggleNotifications()"
+                    class="w-9 h-9 rounded-lg hover:bg-gray-100 flex items-center justify-center transition relative"
+                    aria-label="Notifications">
+                    <i class="fa-regular fa-bell text-navy-800 text-[15px]"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-crit rounded-full alert-pulse"></span>
+                </button>
+                <div id="notif-dropdown" class="notif-dropdown">
+                    <div class="px-4 py-3 border-b border-gray-100">
+                        <span class="font-display font-semibold text-sm text-navy-900">Notifications</span>
+                    </div>
+                    <div class="max-h-64 overflow-y-auto">
+                        <div class="px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition cursor-pointer">
+                            <div class="flex items-start gap-2.5">
+                                <div
+                                    class="w-7 h-7 rounded-full bg-pri-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-clock text-pri-500 text-[10px]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[13px] text-navy-900 font-medium">Marcus Chen — Surgery in 30 min</p>
+                                    <p class="text-[11px] text-gray-400 mt-0.5">Laparoscopic Appendectomy, OR-3</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition cursor-pointer">
+                            <div class="flex items-start gap-2.5">
+                                <div
+                                    class="w-7 h-7 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-triangle-exclamation text-warn text-[10px]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[13px] text-navy-900 font-medium">OR-3 Equipment Check Pending</p>
+                                    <p class="text-[11px] text-gray-400 mt-0.5">Laparoscope calibration due</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 hover:bg-gray-50 transition cursor-pointer">
+                            <div class="flex items-start gap-2.5">
+                                <div
+                                    class="w-7 h-7 rounded-full bg-green-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-flask text-ok text-[10px]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[13px] text-navy-900 font-medium">Lab Results — Elena Vasquez</p>
+                                    <p class="text-[11px] text-gray-400 mt-0.5">CBC and coagulation panel available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="sound-btn" onclick="toggleSound()"
+                class="w-9 h-9 rounded-lg hover:bg-gray-100 flex items-center justify-center transition"
+                aria-label="Toggle sound">
+                <i class="fa-solid fa-volume-high text-navy-800 text-[14px]"></i>
+            </button>
+            <div class="w-px h-6 bg-gray-200 mx-1"></div>
+            <div class="flex items-center gap-2.5 cursor-pointer hover:bg-gray-50 rounded-lg px-2.5 py-1.5 transition">
+                <div class="w-8 h-8 rounded-full bg-pri-100 flex items-center justify-center"><span
+                        class="text-pri-700 font-semibold text-xs">AS</span></div>
+                <div class="hidden sm:block">
+                    <p class="text-[13px] font-medium text-navy-900 leading-tight">Dr. Ashok
+                    <p class="text-[11px] text-gray-400 leading-tight">Lead Surgeon</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content area -->
+    <main id="app-container" class="relative flex-1 flex overflow-hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-64 bg-white border-r border-gray-200 flex flex-col">
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="font-display font-semibold text-navy-900 text-lg">Navigation</h2>
+            </div>
+            <nav class="flex-1 p-4">
+                <ul class="space-y-2">
+                    <li>
+                        <button onclick="navigateTo('dashboard')" class="sidebar-nav-btn active" data-page="dashboard">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="navigateTo('surgeries')" class="sidebar-nav-btn" data-page="surgeries">
+                            <i class="fa-solid fa-heartbeat"></i>
+                            <span>Surgeries</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="navigateTo('patients')" class="sidebar-nav-btn" data-page="patients">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Patients</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="navigateTo('analytics')" class="sidebar-nav-btn" data-page="analytics">
+                            <i class="fa-solid fa-chart-bar"></i>
+                            <span>Analytics</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="navigateTo('reports')" class="sidebar-nav-btn" data-page="reports">
+                            <i class="fa-solid fa-file-medical"></i>
+                            <span>Reports</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="navigateTo('settings')" class="sidebar-nav-btn" data-page="settings">
+                            <i class="fa-solid fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <div id="page-dashboard" class="page active flex-1 overflow-y-auto"></div>
+            <div id="page-surgeries" class="page flex-1 overflow-y-auto"></div>
+            <div id="page-patients" class="page flex-1 overflow-y-auto"></div>
+            <div id="page-analytics" class="page flex-1 overflow-y-auto"></div>
+            <div id="page-reports" class="page flex-1 overflow-y-auto"></div>
+            <div id="page-settings" class="page flex-1 overflow-y-auto"></div>
+            <div id="page-details" class="page flex-1 overflow-y-auto"></div>
+            <div id="page-generation" class="page flex-1 overflow-y-auto"></div>
+            <div id="page-surgery" class="page flex-1 overflow-y-auto"></div>
+            <div id="page-report" class="page flex-1 overflow-y-auto"></div>
+        </div>
+
+        <div id="fixed-buttons" class="fixed-bottom-actions hidden"></div>
+    </main>
+
+    <!-- Alert overlay -->
+    <div id="alert-overlay" role="dialog" aria-modal="true" aria-label="AI Alert">
+        <div id="alert-modal">
+            <div class="flex items-center gap-3 mb-4">
+                <div id="alert-icon-wrap" class="w-10 h-10 rounded-full flex items-center justify-center"><i
+                        id="alert-icon" class="text-lg"></i></div>
+                <div>
+                    <p class="font-display font-semibold text-navy-900 text-[15px]">AI Intervention</p>
+                    <p id="alert-type-label" class="text-[11px] font-semibold uppercase tracking-wider"></p>
+                </div>
+            </div>
+            <p id="alert-message" class="text-[14px] text-navy-800 leading-relaxed mb-5 pl-[52px]"></p>
+            <div class="mb-5 pl-[52px]">
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-[11px] text-gray-400 font-medium">Auto-skip countdown</span>
+                    <span id="alert-countdown-text" class="text-[11px] text-crit font-semibold tabular-nums"></span>
+                </div>
+                <div class="h-1 bg-gray-100 rounded-full overflow-hidden">
+                    <div id="alert-countdown-bar" class="h-full bg-crit rounded-full transition-all duration-100"
+                        style="width:100%"></div>
+                </div>
+            </div>
+            <div class="flex gap-2 pl-[52px]">
+                <button id="alert-btn-1" onclick="handleAlertResponse('already_done')"
+                    class="flex-1 px-3 py-2.5 bg-pri-50 text-pri-700 rounded-lg text-[13px] font-semibold hover:bg-pri-100 transition border border-pri-100"></button>
+                <button id="alert-btn-2" onclick="handleAlertResponse('mark_completed')"
+                    class="flex-1 px-3 py-2.5 bg-green-50 text-green-800 rounded-lg text-[13px] font-semibold hover:bg-green-100 transition border border-green-100"></button>
+                <button id="alert-btn-3" onclick="handleAlertResponse('skip')"
+                    class="flex-1 px-3 py-2.5 bg-gray-50 text-gray-600 rounded-lg text-[13px] font-semibold hover:bg-gray-100 transition border border-gray-200"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[90] flex flex-col gap-2.5"></div>
+
+    <script src="./js/constants.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/navigation.js"></script>
+    <script src="./js/pages.js"></script>
+    <script src="./js/surgery.js"></script>
+    <script src="./js/alerts.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
