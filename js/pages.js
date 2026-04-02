@@ -14,10 +14,10 @@ function renderDashboard() {
           <p class="text-sm text-gray-400 mt-1">${new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
         </div>
         <div class="flex gap-2">
-          <button onclick="showToast('Available in the full clinical version','info')" class="px-4 py-2 bg-pri-500 text-white rounded-lg text-[13px] font-semibold hover:bg-pri-600 transition flex items-center gap-2 shadow-sm">
+          <button onclick="addPatient()" class="px-4 py-2 bg-pri-500 text-white rounded-lg text-[13px] font-semibold hover:bg-pri-600 transition flex items-center gap-2 shadow-sm">
             <i class="fa-solid fa-plus text-[11px]"></i>Add Patient
           </button>
-          <button onclick="showToast('Available in the full clinical version','info')" class="px-4 py-2 bg-white text-navy-900 border border-gray-200 rounded-lg text-[13px] font-semibold hover:bg-gray-50 transition flex items-center gap-2">
+          <button onclick="scheduleSurgery()" class="px-4 py-2 bg-white text-navy-900 border border-gray-200 rounded-lg text-[13px] font-semibold hover:bg-gray-50 transition flex items-center gap-2">
             <i class="fa-regular fa-calendar-plus text-[11px]"></i>Schedule Surgery
           </button>
         </div>
@@ -280,7 +280,7 @@ function renderSurgeries() {
           <h1 class="font-display text-2xl font-bold text-navy-900 tracking-tight">All Surgeries</h1>
           <p class="text-sm text-gray-400 mt-1">Manage and monitor all surgical procedures</p>
         </div>
-        <button onclick="showToast('Available in the full clinical version','info')" class="px-4 py-2 bg-pri-500 text-white rounded-lg text-[13px] font-semibold hover:bg-pri-600 transition flex items-center gap-2 shadow-sm">
+        <button onclick="scheduleSurgery()" class="px-4 py-2 bg-pri-500 text-white rounded-lg text-[13px] font-semibold hover:bg-pri-600 transition flex items-center gap-2 shadow-sm">
           <i class="fa-solid fa-plus text-[11px]"></i>Schedule Surgery
         </button>
       </div>
@@ -442,10 +442,22 @@ function renderPatients() {
         ...s.patient,
         lastSurgery: s.surgeryType,
         surgeryDate: s.scheduledTime,
+        hasSurgery: true,
       });
     }
   });
-  const patients = Array.from(patientMap.values());
+  // Add standalone patients
+  patients.forEach((p) => {
+    if (!patientMap.has(p.mrn)) {
+      patientMap.set(p.mrn, {
+        ...p,
+        lastSurgery: "No surgery scheduled",
+        surgeryDate: "N/A",
+        hasSurgery: false,
+      });
+    }
+  });
+  const allPatients = Array.from(patientMap.values());
 
   el.innerHTML = `
     <div class="max-w-7xl mx-auto p-6">
@@ -454,13 +466,13 @@ function renderPatients() {
           <h1 class="font-display text-2xl font-bold text-navy-900 tracking-tight">Patient Records</h1>
           <p class="text-sm text-gray-400 mt-1">Access and manage patient information</p>
         </div>
-        <button onclick="showToast('Available in the full clinical version','info')" class="px-4 py-2 bg-pri-500 text-white rounded-lg text-[13px] font-semibold hover:bg-pri-600 transition flex items-center gap-2 shadow-sm">
+        <button onclick="addPatient()" class="px-4 py-2 bg-pri-500 text-white rounded-lg text-[13px] font-semibold hover:bg-pri-600 transition flex items-center gap-2 shadow-sm">
           <i class="fa-solid fa-plus text-[11px]"></i>Add Patient
         </button>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        ${patients
+        ${allPatients
           .map(
             (patient) => `
           <div class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition">

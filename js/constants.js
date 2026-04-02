@@ -173,6 +173,10 @@ const surgeries = [
   },
 ];
 
+const patients = [
+  // Additional patients not yet scheduled for surgery
+];
+
 const lapAppendectomySteps = [
   {
     id: 1,

@@ -115,3 +115,101 @@ function showGeneratedChecklist(s) {
   const fixedButtons = document.getElementById("fixed-buttons");
   fixedButtons.innerHTML = "";
 }
+
+/* ========== SCHEDULE SURGERY ========== */
+function scheduleSurgery() {
+  document.getElementById("schedule-modal").classList.remove("hidden");
+}
+
+function closeScheduleModal() {
+  document.getElementById("schedule-modal").classList.add("hidden");
+  document.getElementById("schedule-form").reset();
+}
+
+// Close modal when clicking outside
+document
+  .getElementById("schedule-modal")
+  .addEventListener("click", function (e) {
+    if (e.target === this) {
+      closeScheduleModal();
+    }
+  });
+
+document
+  .getElementById("schedule-form")
+  .addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const newSurgery = {
+      id: surgeries.length + 1,
+      patient: {
+        name: document.getElementById("patient-name").value,
+        age: parseInt(document.getElementById("patient-age").value),
+        gender: document.getElementById("patient-gender").value,
+        bloodGroup: document.getElementById("patient-blood").value,
+        mrn: `MRN-2024-${String(Math.floor(Math.random() * 100000)).padStart(5, "0")}`,
+      },
+      surgeryType: document.getElementById("surgery-type").value,
+      scheduledTime: document.getElementById("scheduled-time").value,
+      status: "upcoming",
+      doctor: document.getElementById("doctor").value,
+      team: [], // Can be added later
+      room: document.getElementById("room").value,
+      duration: document.getElementById("duration").value,
+      notes: document.getElementById("notes").value || "",
+    };
+
+    surgeries.push(newSurgery);
+    closeScheduleModal();
+    showToast("Surgery scheduled successfully!", "success");
+
+    // Re-render the current page to show the new surgery
+    if (state.currentPage === "dashboard") {
+      renderDashboard();
+    } else if (state.currentPage === "surgeries") {
+      renderSurgeries();
+    }
+  });
+/* ========== ADD PATIENT ========== */
+function addPatient() {
+  document.getElementById("add-patient-modal").classList.remove("hidden");
+}
+
+function closeAddPatientModal() {
+  document.getElementById("add-patient-modal").classList.add("hidden");
+  document.getElementById("add-patient-form").reset();
+}
+
+// Close modal when clicking outside
+document
+  .getElementById("add-patient-modal")
+  .addEventListener("click", function (e) {
+    if (e.target === this) {
+      closeAddPatientModal();
+    }
+  });
+
+document
+  .getElementById("add-patient-form")
+  .addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const newPatient = {
+      name: document.getElementById("patient-full-name").value,
+      age: parseInt(document.getElementById("patient-new-age").value),
+      gender: document.getElementById("patient-new-gender").value,
+      bloodGroup: document.getElementById("patient-new-blood").value,
+      mrn: document.getElementById("patient-mrn").value,
+      notes: document.getElementById("patient-new-notes").value || "",
+    };
+
+    patients.push(newPatient);
+    closeAddPatientModal();
+    showToast("Patient added successfully!", "success");
+
+    // Re-render the patients page if currently viewing it
+    if (state.currentPage === "patients") {
+      renderPatients();
+    }
+  });

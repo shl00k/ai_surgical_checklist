@@ -209,6 +209,179 @@
     <!-- Toast container -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-[90] flex flex-col gap-2.5"></div>
 
+    <!-- Schedule Surgery Modal -->
+    <div id="schedule-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-display text-lg font-semibold text-navy-900">Schedule Surgery</h2>
+                <button onclick="closeScheduleModal()"
+                    class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center">
+                    <i class="fa-solid fa-x text-gray-400 text-sm"></i>
+                </button>
+            </div>
+            <form id="schedule-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-navy-900 mb-1">Patient Name</label>
+                    <input type="text" id="patient-name" required
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-navy-900 mb-1">Age</label>
+                        <input type="number" id="patient-age" required
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-navy-900 mb-1">Gender</label>
+                        <select id="patient-gender" required
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-navy-900 mb-1">Blood Group</label>
+                    <select id="patient-blood" required
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500">
+                        <option value="">Select</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-navy-900 mb-1">Surgery Type</label>
+                    <input type="text" id="surgery-type" required
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-navy-900 mb-1">Scheduled Time</label>
+                        <input type="time" id="scheduled-time" required
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-navy-900 mb-1">Room</label>
+                        <input type="text" id="room" required
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500"
+                            placeholder="OR-1">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-navy-900 mb-1">Duration</label>
+                    <input type="text" id="duration" required
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500"
+                        placeholder="45–60 min">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-navy-900 mb-1">Doctor</label>
+                    <input type="text" id="doctor" required
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500"
+                        placeholder="Dr. Name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-navy-900 mb-1">Notes</label>
+                    <textarea id="notes" rows="3"
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500"
+                        placeholder="Additional notes..."></textarea>
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button type="button" onclick="closeScheduleModal()"
+                        class="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="flex-1 px-4 py-2 bg-pri-500 text-white rounded-lg font-semibold hover:bg-pri-600 transition">
+                        Schedule Surgery
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Patient Modal -->
+    <div id="add-patient-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md mx-4">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="font-display text-lg font-semibold text-navy-900">Add New Patient</h2>
+                <button onclick="closeAddPatientModal()"
+                    class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center">
+                    <i class="fa-solid fa-x text-gray-400 text-sm"></i>
+                </button>
+            </div>
+            <form id="add-patient-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-navy-900 mb-1">Full Name</label>
+                    <input type="text" id="patient-full-name" required
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-navy-900 mb-1">Age</label>
+                        <input type="number" id="patient-new-age" required
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-navy-900 mb-1">Gender</label>
+                        <select id="patient-new-gender" required
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-navy-900 mb-1">Blood Group</label>
+                    <select id="patient-new-blood" required
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500">
+                        <option value="">Select</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-navy-900 mb-1">Medical Record Number (MRN)</label>
+                    <input type="text" id="patient-mrn" required
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500"
+                        placeholder="MRN-2024-XXXXX">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-navy-900 mb-1">Notes</label>
+                    <textarea id="patient-new-notes" rows="3"
+                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pri-500"
+                        placeholder="Additional notes..."></textarea>
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button type="button" onclick="closeAddPatientModal()"
+                        class="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="flex-1 px-4 py-2 bg-pri-500 text-white rounded-lg font-semibold hover:bg-pri-600 transition">
+                        Add Patient
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="./js/constants.js"></script>
     <script src="./js/utils.js"></script>
     <script src="./js/navigation.js"></script>
